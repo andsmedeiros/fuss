@@ -13,12 +13,6 @@ struct message {
     using listener = typename std::list<handler>::iterator;
 };
 
-template<>
-struct message<void> {
-    using handler = std::function<void(void)>;
-    using listener = typename std::list<handler>::iterator;
-};
-
 template<class T_message, class ... T_rest>
 struct shouter : public shouter<T_message>, public shouter<T_rest ...> {
   using shouter<T_message>::listen;
