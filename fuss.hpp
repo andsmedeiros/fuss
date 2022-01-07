@@ -45,7 +45,7 @@ protected:
         
         {
             std::lock_guard guard{ mutex };
-            handlers.insert(handlers.end(), this->handlers.begin(), this->handlers.end());
+            handlers.splice(handlers.end(), this->handlers);
             this->handlers.swap(handlers);
         }
     }
@@ -55,12 +55,12 @@ public:
     std::enable_if_t<std::is_same<T_message, T>::value, typename T_message::listener>
     listen(typename T_message::handler handler) {
         std::lock_guard guard{ mutex };
-        return this->handlers.insert(this->handlers.end(), handler);
+        return handlers.insert(handlers.end(), handler);
     }
 
     void unlisten(typename T_message::listener &listener) {
         std::lock_guard guard{ mutex };
-        this->handlers.erase(listener);
+        handlers.erase(listener);
     }
 };
 
