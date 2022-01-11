@@ -24,7 +24,6 @@ struct shouter : public shouter<T_message>, public shouter<T_rest ...> {
 
 template<class T_message>
 class shouter<T_message> {
-    struct listener : std::list<typename T_message::handler>::iterator {};
 
     std::list<typename T_message::handler> handlers;
     std::mutex mutex;
@@ -52,6 +51,8 @@ protected:
     }
 
 public:
+    struct listener : std::list<typename T_message::handler>::iterator {};
+    
     template<class T>
     std::enable_if_t<std::is_same<T_message, T>::value, listener>
     listen(typename T_message::handler handler) {
